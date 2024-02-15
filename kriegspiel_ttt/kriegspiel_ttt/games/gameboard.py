@@ -33,8 +33,7 @@ class GameBoard:
          [[0, 2], [1, 1], [2, 0]]]
 
     def __post_init__(self):
-        self.active = "x"
-        self.passive = "o"
+        self.active, self.passive = "xo" if self.current_move % 2 == 0 else "ox"
 
     @property
     def active_board(self):
