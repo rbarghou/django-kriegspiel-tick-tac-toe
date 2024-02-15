@@ -4,12 +4,14 @@ from typing import ClassVar, Dict, List
 
 from dataclasses_json import dataclass_json
 
+
 def _empty_board_factory():
     return [
         [None, None, None],
         [None, None, None],
         [None, None, None]
     ]
+
 
 @dataclass_json
 @dataclass
