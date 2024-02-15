@@ -3,7 +3,29 @@ from django.db import models
 from django.db.models import F, Q
 
 
-# Create your models here.
+from .gameboard import GameBoard
+
+
+class GameDataField(models.JSONField):
+
+    def from_db_value(self, value, expression, connection):
+        value = super().from_db_value(value, expression, connection)
+        if value is None or isinstance(value, GameBoard):
+            return value
+        return GameBoard.from_dict(value)
+
+    def to_python(self, value):
+        value = super().to_python(value)
+        if value is None or isinstance(value, GameBoard):
+            return value
+        return GameBoard.from_dict(value)
+
+    def get_prep_value(self, value):
+        if isinstance(value, GameBoard):
+            value = value.to_dict()
+        return super().get_prep_value(value)
+
+
 class Game(models.Model):
     started = models.DateTimeField(auto_now_add=True)
     completed = models.DateTimeField(null=True)
@@ -19,7 +41,7 @@ class Game(models.Model):
         on_delete=models.CASCADE,
         related_name="O_game_set"
     )
-    game_data = models.JSONField(null=False, default={})
+    game_data = GameDataField(null=False, default={})
 
     class Meta:
         constraints = [
