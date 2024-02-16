@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Game
+from .forms import GameForm
+
+
+@admin.register(Game)
+class GameAdmin(admin.ModelAdmin):
+    pass
+    # form = GameForm

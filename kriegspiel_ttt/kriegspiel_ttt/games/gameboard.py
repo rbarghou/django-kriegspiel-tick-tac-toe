@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from itertools import chain
+import json
 from typing import ClassVar, Dict, List
 
 from dataclasses_json import dataclass_json
@@ -11,6 +12,7 @@ def _empty_board_factory():
         [None, None, None],
         [None, None, None]
     ]
+
 
 
 @dataclass_json
@@ -31,6 +33,17 @@ class GameBoard:
          [[2, 0], [2, 1], [2, 2]],
          [[0, 0], [1, 1], [2, 2]],
          [[0, 2], [1, 1], [2, 0]]]
+
+    class Encoder(json.JSONEncoder):
+        def encode(self, o):
+            if isinstance(o, dict):
+                return GameBoard(**o).to_json()
+            assert isinstance(o, GameBoard)
+            return o.to_json()
+
+    class Decoder(json.JSONDecoder):
+        def decode(self, s, _w=...):
+            return GameBoard.from_json(s)
 
     def __post_init__(self):
         self.active, self.passive = "xo" if self.current_move % 2 == 0 else "ox"
