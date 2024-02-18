@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import F, Q
 
 
-from .gameboard import GameBoard
+from .gameboard import GameBoard as _GameBoard
 
 
 class Game(models.Model):
@@ -21,7 +21,7 @@ class Game(models.Model):
         on_delete=models.CASCADE,
         related_name="O_game_set"
     )
-    game_data = models.JSONField(null=False, default={}, encoder=GameBoard.Encoder, decoder=GameBoard.Decoder)
+    game_data = models.JSONField(null=False, default={}, encoder=_GameBoard.Encoder, decoder=_GameBoard.Decoder)
 
     class Meta:
         constraints = [
