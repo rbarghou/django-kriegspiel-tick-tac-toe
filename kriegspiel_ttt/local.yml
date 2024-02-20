@@ -23,6 +23,17 @@ services:
       - '8000:8000'
     command: /start
 
+  react:
+    image: kriegspiel_ttt_local_react
+    container_name: kriegspiel_ttt_local_react
+    build:
+      context: ./kriegspiel_ttt_react
+      dockerfile: ../compose/local/react/Dockerfile
+    volumes:
+      - ./kriegspiel_ttt_react/src:/app/src
+    ports:
+      - 3000:3000
+
   postgres:
     build:
       context: .
